@@ -9,11 +9,11 @@ ideal_outcome <- 19690720
 
 opcode_positions <- seq(1, length(global_input), by = 4) 
  
-for(i in 0:99){
-  for(j in 0:99){ 
-    input <- global_input
-    input[2] <- i
-    input[3] <- j
+for(i in 0:99){ # added later for part 2
+  for(j in 0:99){ # added later for part 2
+    input <- global_input # added later for part 2
+    input[2] <- i # added later for part 2
+    input[3] <- j # added later for part 2
     for(opcode_position in opcode_positions){ 
       operand1 <- input[input[opcode_position + 1] + 1] 
       operand2 <- input[input[opcode_position + 2] + 1] 
@@ -21,7 +21,7 @@ for(i in 0:99){
         input[input[opcode_position + 3] + 1] <- operand1 + operand2 
         } else if(input[opcode_position] == 2){ 
           input[input[opcode_position + 3] + 1] <- operand1 * operand2 
-          } else if(input[1] == ideal_outcome){
+          } else if(input[1] == ideal_outcome){ # this else if block added later for part 2
             message("Noun: ", input[2], ", verb: ", input[3], ", output: ", 100 * input[2] + input[3])
             stop("SUCCESSFUL")
             } else if(input[opcode_position] == 99){ 
