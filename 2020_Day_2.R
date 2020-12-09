@@ -29,8 +29,27 @@ passwords <- data.table(c("15-16 f: ffffffffffffffff","6-8 b: bbbnvbbb","6-10 z:
 "6-7 v: vvvvvkdgvp","6-8 t: ttsttttp","1-3 s: qsjssns","3-5 r: xrrnrktrhjqlqlrhrlkr","3-8 n: nnnnnnbx","1-3 q: mqqqqqqv","4-6 t: tttldvtt","16-19 m: pmzzdmmnzrzhmfvmkms","2-4 t: sxmth","3-13 b: bbsbbbbxbbbbkbbbbb","5-7 n: kkjrnnn","1-3 b: bcbbb","6-8 w: wwwwwwwbwwkw","3-11 c: xccmsqcsvwv","7-10 n: clhtfgmnfnpvwvzv","6-7 v: vvvvvdvvzv","1-16 k: ssckbjfgcfwgppck","10-12 r: rrrrrrrrrfrrrr","17-19 r: rrrrrrrrrrrrrrrrrl","2-8 l: qlhgldtlbzzvt","11-12 h: mcbpvhmtfgsh","3-7 v: gvvvkkvkvvj","1-9 d: ddddddddq","4-5 v: vdlfll","8-9 z: xjzptzzzr","19-20 n: nlnnnnnznnnnnnnnsndk","7-9 r: rrrrrrrrsrrr","5-6 d: ddddwdd","18-19 j: fjjjfjljwhjjjbjjjgr","3-7 d: ddddtdddddddddd","2-4 p: pbmp","6-7 r: trrhwrb","6-12 l: zppllllmpfwkvnh","11-14 l: llcvllllllllsl","1-4 k: kkkjkk","2-6 m: mqmmmf", 
 "3-10 b: bxbbbbbbbntbdblb","12-13 h: nhplrlncpxzbh","17-19 s: ssssssssssssssssfss","3-4 x: kfxx","7-9 l: llllllrlqwl","2-4 q: zwrqqhrbx","7-11 g: qpqwgbgcgkzbgn","6-7 w: wwwwwglwwwww","5-6 b: dbbbfb","2-4 p: ckpp","2-14 x: bxtgfvzxcbrqkxjqk","2-4 x: gpfx","2-5 g: pbglg","7-11 w: wwrjjbjtpjwzhgsqj","1-3 x: xgmrxcqxbpfxxxbxxxf","7-8 r: qwrvqvqhs","4-8 t: dtjtlhgvrxjb","13-14 c: nvsmqzmclhwpdc","7-10 b: xbkspdlbbbbbnfnb","16-17 j: jjjfjjjjjjjjjjjjl","3-4 n: snnrp","11-15 r: rrrrrrrrrrrrrrr","8-10 n: mcgnngfnrjpkxdmjnnx","9-16 x: xzxxxxxxxxxxxxxdxxxx","9-10 x: xxxxxxxdfx","1-11 x: gxxxxxxxxxmxxxx","9-11 s: ssjssssgksfs","5-6 r: pdrmrgrwrlxr","3-6 f: fwfdsfzddj","7-8 c: ccccccgc","3-8 t: wttlmpdkfkf","6-7 s: xsvmsds","6-7 n: jbncncnn")) 
  
+#### PREPROCESSING ####
 passwords <- passwords[, tstrsplit(V1, " ")] 
 passwords[, c("MIN", "MAX") := tstrsplit(V1, "-")][, V1 := NULL] 
+passwords[, MIN := as.numeric(MIN)]; passwords[, MAX := as.numeric(MAX)] 
 passwords[, LOOKUP := gsub(":", "", V2)][, V2 := NULL] 
-# passwords[, lapply(.SD, function(x) grep(LOOKUP, x)), by = V3] 
-passwords[, unlist(gregexpr(LOOKUP, V3))] 
+setnames(passwords, "V3", "Password") 
+######## 
+ 
+#### PART 1 #### 
+passwords[, Occurence := length(unlist(gregexpr(LOOKUP, Password))), by = 1:nrow(passwords)] 
+passwords[Occurence < MIN | Occurence > MAX, Status := "INVALID"] 
+passwords[, .N, by = Status] 
+######## 
+ 
+#### PART 2 #### 
+# passwords[, XOR := xor(any(unlist(gregexpr(LOOKUP, Password)) == MIN), 
+#                        any(unlist(gregexpr(LOOKUP, Password)) == MAX)), 
+#           by = 1:nrow(passwords)] 
+
+passwords[, INDEX1 := any(unlist(gregexpr(LOOKUP, Password)) == MIN), by = 1:nrow(passwords)]
+passwords[, INDEX2 := any(unlist(gregexpr(LOOKUP, Password)) == MAX), by = 1:nrow(passwords)]
+
+######## 
+ 
