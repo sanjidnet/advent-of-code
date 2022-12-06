@@ -1,7 +1,8 @@
 # Preprocessing
-dta <- data.table::fread(
-  "C:/Users/SanjidRahman/projects/advent-of-code/2022/data/day-02.txt", 
-  header = FALSE)[, .(Opponent = V1, Part1_Me = V2)]
+library(data.table)
+home <- Sys.getenv("ADVENT_OF_CODE_HOME")
+dta <- data.table::fread(paste0(home, "data/day-02.txt"), header = FALSE)[, .(
+  Opponent = V1, Part1_Me = V2)]
 
 # PART 1
 dta[Opponent == "A" & Part1_Me == "X", `:=`(Score = 3, Shape = 1)]

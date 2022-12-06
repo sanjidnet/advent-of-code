@@ -1,8 +1,7 @@
 # Preprocessing
-dta <- data.table::fread(
-  "C:/Users/SanjidRahman/projects/advent-of-code/2022/data/day-03.txt", 
-  header = FALSE)[, .(
-    Input = V1)]
+library(data.table)
+home <- Sys.getenv("ADVENT_OF_CODE_HOME")
+dta <- data.table::fread(paste0(home, "data/day-03.txt"), header = FALSE)[, .(Input = V1)]
 letter_ref <- data.table::data.table(
   LETTER_REFERENCE = c(letters, LETTERS), NUMERIC_LETTER = 1:52)
 
@@ -17,8 +16,7 @@ for(i in 1:dim(dta)[1]){
     unlist(strsplit(SECOND, "")), value = TRUE))]
 }
 
-dta <- merge(dta, letter_ref, 
-  by.x = "LETTER_PART1", by.y = "LETTER_REFERENCE", sort = FALSE)
+dta <- merge(dta, letter_ref, by.x = "LETTER_PART1", by.y = "LETTER_REFERENCE", sort = FALSE)
 
 message("Part 1 Answer: ", sum(dta$NUMERIC_LETTER))
 # PART 1 Answer: 7863

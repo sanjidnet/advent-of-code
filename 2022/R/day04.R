@@ -1,7 +1,7 @@
 # Preprocessing
 library(data.table)
-dta <- data.table::fread(
-  "C:/Users/SanjidRahman/projects/advent-of-code/2022/data/day-04.txt", header = FALSE)[, .(
+home <- Sys.getenv("ADVENT_OF_CODE_HOME")
+dta <- data.table::fread(paste0(home, "data/day-04.txt"), header = FALSE)[, .(
     Input1 = V1, Input2 = V2)]
 dta[, c("Input1_Min", "Input1_Max") := tstrsplit(Input1, "-")]
 dta[, c("Input2_Min", "Input2_Max") := tstrsplit(Input2, "-")]

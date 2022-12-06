@@ -1,7 +1,7 @@
 # Preprocessing
-elf_calories <- data.table::fread(
-  "C:/Users/SanjidRahman/projects/advent-of-code/2022/data/day-01.txt")[, .(
-    Input = V1)]
+library(data.table)
+home <- Sys.getenv("ADVENT_OF_CODE_HOME")
+elf_calories <- data.table::fread(paste0(home, "data/day-01.txt"))[, .(Input = V1)]
 elf_calories[1, elf_id := 0]
 elf_calories[is.na(Input), elf_id := .I]
 elf_calories[, elf_id := data.table::nafill(elf_id, "locf")]
