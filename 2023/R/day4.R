@@ -13,7 +13,20 @@ for(p in 1:dim(dta)[1]){
   }
 }
 
+## PART 1
 dta[, point := ifelse(count == 0, 0, 2 ^ (count - 1))]
-
 message(sum(dta$point))
 
+## PART 2
+## super slow code alert
+dta[, copies := 1]
+for (x in 1:dim(dta)[1]) {
+  message(x)
+  if(dta[x]$count == 0) next
+  for (i in 1:dta[x]$count){
+    for (y in 1:dta[x]$copies) {
+      dta[x + i, copies := copies + 1]
+    }
+  }
+}
+message(sum(dta$copies))
