@@ -62,3 +62,4 @@ for (k in 1:dim(asterisks_table)[1]) {
   }
 }
 message(gear_sum)
+
