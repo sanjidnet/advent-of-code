@@ -1,4 +1,3 @@
-library(data.table)
 dta <- readLines("../data/day5/input_sample")
 
 seeds <- as.numeric(unlist(strsplit(unlist(strsplit(dta[1], ": "))[2], " ")))
